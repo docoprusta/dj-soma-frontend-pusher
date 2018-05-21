@@ -1,0 +1,20 @@
+<div class="col-xs-auto">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <span class="navbar-brand">Dj Soma</span>
+                <li class="dropdown pull-left">
+                    <a routerLink="/playlist">Playlist</a>
+                </li>
+                <li *ngIf="songService.remainingTime <= 1"
+                    class="dropdown pull-left">
+                    <a routerLink="/search">Search</a>
+                </li>
+                <li class="dropdown pull-right">
+                    <a routerLink="/appsettings">App settings</a>                    
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+</div>

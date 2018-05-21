@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="col-xs-auto">
+    <p *ngIf="songService.alreadyAdded" class="text-danger">This video is already added to the playlist</p>
+    <p *ngIf="!songService.canAddNewSong" class="text-danger">You can't add a new song for a while</p>
+    <p *ngIf="songService.remainingTime > 1" class="text-danger">You can't add a new song for {{songService.remainingTime | minuteSeconds}}</p>
+
+    <div class="form-group">
+      <label class="center-block text-center">Volume</label>
+      <input [disabled]="this.songService.videoIds.length === 0" type="range" [(ngModel)]="volume" (change)="onVolumeChange()"
+        role="button" min="1" max="100" class="slider" id="volumeSlider">
+    </div>
+
+    <div class="form-group">
+      <input id="autoPlayCheckbox" #autoPlayCheckbox [(ngModel)]="songService.autoPlay" (change)="autoPlayCheckboxChanged()" type="checkbox"
+        class="form-check-input">
+      <label for="autoPlayCheckbox">Autoplay(beta)</label>
+    </div>
+
+    <nav role="button" *ngFor="let title of songService.titles; let i = index" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <div *ngIf="i == 0 && songService.progress > 0.1" id="progressBar" class="breadcrumb" [ngStyle]="{width:songService.progress/100 | percent:'1.0-1'}">
+        </div>
+        <div class="col-xs-auto">
+          <span class="media-left">
+            <img height="70px" width="70px" src="{{songService.images[i]}}">
+          </span>
+          <div class="media-body row text-center">
+            <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{songService.durations[i] | minuteSeconds}}</li>
+          </div>
+        </div>
+        <div *ngIf="songService.isAdmin" class="media-body row text-right">
+          <button class="btn icon-btn btn-danger" (click)="onDelete(i)">
+            <span class="glyphicon glyphicon-remove text-success"></span>
+          </button>
+        </div>
+      </ol>
+    </nav>
+
+    <div class="row">
+      <div class="col-xs-1">
+        <a class="btn icon-btn btn-success" *ngIf="songService.remainingTime <= 1" routerLink="/search">
+          <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+        </a>
+      </div>
+      <div class="container" *ngIf="songService.autoPlay && songService.videoIds.length > 0">
+        <div class="media-body text-right">
+          <button class="btn icon-btn btn-success" (click)="onNextSong()">
+            <span class="glyphicon glyphicon-step-forward img-circle text-success"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

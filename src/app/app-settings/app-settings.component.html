@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="col-xs-auto">
+    <form #appSettingsForm="ngForm" (ngSubmit)="onSaveClick()">
+      <div class="form-group">
+        <label for="baseUrl">Base url</label>
+        <input class="form-control" id="baseUrl" type="text" (keyup)="onBaseUrlKeyUp()" #baseUrlInput>
+      </div>
+      <div *ngIf="songService.isAdmin" class="form-group">
+        <label for="waitingTime">Waiting time in seconds (between 0 and 300)</label>
+        <input [disabled]="!songService.isBaseUrlCorrect" [(ngModel)]="songService.waitingTime" (keyup)="onWaitingTimeInputKeyUp()" class="form-control" id="waitingTime" min=0 max=300 oninput="validity.valid||(value='');" type="number" name="waitingTimeInput" #waitingTimeInput required>
+        <span class="help-block" *ngIf="!waitingTimeInput.valid && waitingTimeInput.touched">
+          Please enter a number between 0 and 300!
+        </span>
+      </div>
+      <p *ngIf="!songService.isBaseUrlCorrect" class="text-danger">Server not found!</p>
+      
+      <!-- <div class="form-group">
+        <button [disabled]="!appSettingsForm.form.valid" type="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-cancel" routerLink="/">Cancel</button>
+      </div> -->
+    </form>
+  </div>
+</div>
